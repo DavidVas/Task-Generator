@@ -1,5 +1,5 @@
 interface StackProps {
-    children: React.ReactNode[],
+    children: React.ReactNode | React.ReactNode[],
     orientation?: Orientation,
     gridGap?: string,
 }
@@ -11,9 +11,7 @@ export default function Stack({children, orientation = "vertical", gridGap = "16
 
     return (
         <div style={{display: "grid", gridGap: gridGap, gridAutoFlow: gridAutoFlow}}>
-            {children.map((child) => {
-                return (<div>{child}</div>);
-            })}
+            {children}
         </div>
     );
 }

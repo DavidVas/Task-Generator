@@ -1,13 +1,18 @@
+import { useState } from "react";
+import AddTask from "./Components/AddTask";
 import Stack from "./Components/Stack";
-import Task from "./Components/Task";
+import Task, { TaskModel } from "./Components/Task";
 
 function App() {
+  const [tasks, setTasks] = useState<TaskModel[]>([]);
+
   return (
-    <div style={{background: "#5F7CC6", width: "100%", minWidth: "100vh", height: "100vh", minHeight: "100vh", padding: "16px" }}>
+    <div style={{background: "#010E2D", width: "100%", minWidth: "100vh", height: "100vh", minHeight: "100vh", padding: "16px" }}>
       <Stack>
-        <Task name="first task" weight={4}/>
-        <Task name="second task (which is a long task)" weight={2}/>
-        <Task name="third task" weight={1}/>
+        {tasks.map((task) => <Task name={task.name} weight={task.weight}/>)}
+        <AddTask addTask={(name: string) => {
+            setTasks(oldTasks => [...oldTasks, {name: name, weight: 1}])
+          }}/>
       </Stack>
     </div>
   );
