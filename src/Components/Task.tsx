@@ -10,10 +10,11 @@ export default function Task({name, weight}: TaskModel) {
         <Tile>
             <div style={
                 {
-                    display: "grid", gridTemplateColumns: "1fr 20px", gridGap: "20px"
+                    display: "grid", gridTemplateColumns: "1fr 40px", gridGap: "20px",
+                    border: "1px solid #4e72cc", borderRadius: "8px",
                 }
             }>
-                <div style={{verticalAlign: "middle", borderRadius: "8px", background: "#4e72cc", padding: "8px"}}>{name}</div>
+                <div style={{verticalAlign: "middle", borderRadius: "8px", padding: "8px"}}>{name}</div>
                 <div style={{margin: "auto"}}>{weight}</div>
             </div>
         </Tile>
