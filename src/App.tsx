@@ -22,7 +22,7 @@ function App() {
     <div style={{ height: "100vh", overflow: "hidden" }}>
       <Stack orientation="horizontal">
         
-        <div style={{ boxSizing: "border-box", padding: "20px", height: "100vh", overflowY: "scroll" }}>
+        <div style={{ boxSizing: "border-box", padding: "20px", height: "100vh", maxWidth: "300px", overflowY: "scroll" }}>
           <Stack>
             <Stack gridGap="8px">
               {tasks.map((task) => <Task name={task.name} weight={task.weight} />)}
