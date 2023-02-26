@@ -2,30 +2,57 @@ import { useState } from "react";
 import AddTask from "./Components/AddTask";
 import Button from "./Components/Button";
 import Stack from "./Components/Stack";
-import Task, { TaskModel } from "./Components/Task";
+import Task, { TaskData, TaskProps } from "./Components/Task";
 import Tile from "./Components/Tile";
 
 function App() {
-  const [tasks, setTasks] = useState<TaskModel[]>([]);
-  const [selectedTask, setSelectedTask] = useState<TaskModel>();
+  const [tasks, setTasks] = useState<TaskData[]>([]);
+  const [selectedTask, setSelectedTask] = useState<Number>();
+
+  const onTaskChange = (index: number) => {
+    return (newValue: TaskData) => setTasks(() => {
+      return tasks.map((oldValue, i) => { if (index === i) return newValue; return oldValue });
+    });
+  };
 
   const addTaskFunction = (name: string) => {
-    setTasks(oldTasks => [...oldTasks, { name: name, weight: 1 }, { name: name, weight: 1 },{ name: name, weight: 1 },{ name: name, weight: 1 },{ name: name, weight: 1 },{ name: name, weight: 1 },{ name: name, weight: 1 },{ name: name, weight: 1 },{ name: name, weight: 1 }, { name: name, weight: 1 },{ name: name, weight: 1 },{ name: name, weight: 1 },{ name: name, weight: 1 },{ name: name, weight: 1 },{ name: name, weight: 1 },{ name: name, weight: 1 },{ name: name, weight: 1 },{ name: name, weight: 1 },{ name: name, weight: 1 },])
+    setTasks(oldTasks => [...oldTasks, { name: name, weight: 1 }])
   };
 
   const selectRandomTask = () => {
-    const selectedIndex = Math.floor(Math.random() * tasks.length);
-    setSelectedTask(tasks[selectedIndex]);
+    const accumulatedArray = calculateAccumulatedArray();
+    const maxValue = accumulatedArray[accumulatedArray.length - 1];
+    const selectedValue = Math.floor(Math.random() * maxValue + 1);
+
+    let selectedIndex = 0;
+
+    for (let index = 0; index < accumulatedArray.length - 1; index++) {
+      if (accumulatedArray[index] < selectedValue && selectedValue <= accumulatedArray[index + 1]) {
+        selectedIndex = index + 1;
+      }
+    }
+
+    setSelectedTask(() => selectedIndex);
+  }
+
+  const calculateAccumulatedArray = () => {
+    let array: number[] = [tasks[0].weight];
+    tasks.map((task) => task.weight).reduce((accumulator, currentWeight) => {
+      const currentTotal = accumulator + currentWeight;
+      array = array.concat(currentTotal);
+      return currentTotal;
+    });
+    return array;
   }
 
   return (
     <div style={{ height: "100vh", overflow: "hidden" }}>
       <Stack orientation="horizontal">
-        
+
         <div style={{ boxSizing: "border-box", padding: "20px", height: "100vh", maxWidth: "300px", overflowY: "scroll" }}>
           <Stack>
             <Stack gridGap="8px">
-              {tasks.map((task) => <Task name={task.name} weight={task.weight} />)}
+              {tasks.map((task, index) => <Task taskData={{name: task.name, weight: task.weight}} isSelected={index === selectedTask} onTaskChange={onTaskChange(index)} />)}
             </Stack>
             <AddTask addTask={addTaskFunction} />
           </Stack>
@@ -35,7 +62,7 @@ function App() {
           <Button onClick={selectRandomTask} size={"60px"} />
           {selectedTask &&
             <Tile>
-              {selectedTask?.name}
+              {selectedTask.toString()}
             </Tile>}
         </Stack>
 
