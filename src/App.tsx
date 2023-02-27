@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddTask from "./Components/AddTask";
 import Button from "./Components/Button";
 import Stack from "./Components/Stack";
-import Task, { TaskData, TaskProps } from "./Components/Task";
-import Tile from "./Components/Tile";
+import Task, { TaskData } from "./Components/Task";
+import { getDataList, setData } from "./StorageUtils";
 
 function App() {
-  const [tasks, setTasks] = useState<TaskData[]>([]);
+  const [tasks, setTasks] = useState<TaskData[]>(
+    getDataList("tasks")
+  );
   const [selectedTask, setSelectedTask] = useState<Number>();
 
   const onTaskChange = (index: number) => {
@@ -45,6 +47,10 @@ function App() {
     return array;
   }
 
+  useEffect(() => {
+    setData("tasks", tasks);
+  }, [tasks]);
+
   return (
     <div style={{ height: "100vh", overflow: "hidden" }}>
       <Stack orientation="horizontal">
@@ -60,10 +66,6 @@ function App() {
 
         <Stack>
           <Button onClick={selectRandomTask} size={"60px"} />
-          {selectedTask &&
-            <Tile>
-              {selectedTask.toString()}
-            </Tile>}
         </Stack>
 
       </Stack>

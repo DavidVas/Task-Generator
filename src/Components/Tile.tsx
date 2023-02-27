@@ -6,7 +6,7 @@ export default function Tile({ children }: TileProps) {
     return (
         <div style={
             {
-                maxWidth: "240px", maxHeight: "120px"
+                maxWidth: "260px", maxHeight: "120px"
             }
         }>
             {children}
