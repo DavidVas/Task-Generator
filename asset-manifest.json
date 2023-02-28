@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Task-Generator/static/css/main.b43bc1ca.css",
+    "main.js": "/Task-Generator/static/js/main.34987d33.js",
+    "index.html": "/Task-Generator/index.html",
+    "main.b43bc1ca.css.map": "/Task-Generator/static/css/main.b43bc1ca.css.map",
+    "main.34987d33.js.map": "/Task-Generator/static/js/main.34987d33.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b43bc1ca.css",
+    "static/js/main.34987d33.js"
+  ]
+}
