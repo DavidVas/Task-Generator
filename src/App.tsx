@@ -10,6 +10,8 @@ function App() {
     getDataList("tasks")
   );
   const [selectedTask, setSelectedTask] = useState<Number>();
+  const [deleteMode, setDeleteMode] = useState<boolean>(false);
+
 
   const onTaskChange = (index: number) => {
     return (newValue: TaskData) => setTasks(() => {
@@ -21,6 +23,13 @@ function App() {
     setTasks(oldTasks => [...oldTasks, { name: name, weight: 1 }])
   };
 
+  const onDeleteTask = (index: number) => {
+    return () => {
+      setTasks((tasks) => tasks.filter((value, i) => i !== index));
+      setSelectedTask(() => undefined);
+    }
+  };
+
   const selectRandomTask = () => {
     const accumulatedArray = calculateAccumulatedArray();
     const maxValue = accumulatedArray[accumulatedArray.length - 1];
@@ -30,7 +39,7 @@ function App() {
 
     for (let index = 0; index < accumulatedArray.length - 1; index++) {
       if (accumulatedArray[index] < selectedValue && selectedValue <= accumulatedArray[index + 1]) {
-        selectedIndex = index + 1;
+        selectedIndex = index;
       }
     }
 
@@ -38,12 +47,13 @@ function App() {
   }
 
   const calculateAccumulatedArray = () => {
-    let array: number[] = [tasks[0].weight];
+    let array: number[] = [0];
     tasks.map((task) => task.weight).reduce((accumulator, currentWeight) => {
+      console.log(accumulator);
       const currentTotal = accumulator + currentWeight;
       array = array.concat(currentTotal);
       return currentTotal;
-    });
+    }, 0);
     return array;
   }
 
@@ -55,17 +65,18 @@ function App() {
     <div style={{ height: "100vh", overflow: "hidden" }}>
       <Stack orientation="horizontal">
 
-        <div style={{ boxSizing: "border-box", padding: "20px", height: "100vh", maxWidth: "300px", overflowY: "scroll" }}>
+        <div style={{ boxSizing: "border-box", padding: "20px", height: "100vh", maxWidth: "320px", overflowY: "scroll" }}>
           <Stack>
             <Stack gridGap="8px">
-              {tasks.map((task, index) => <Task taskData={{name: task.name, weight: task.weight}} isSelected={index === selectedTask} onTaskChange={onTaskChange(index)} />)}
+              {tasks.map((task, index) => <Task taskData={{name: task.name, weight: task.weight}} isSelected={index === selectedTask} onTaskChange={onTaskChange(index)} deleteMode={deleteMode} onDelete={onDeleteTask(index)} />)}
             </Stack>
             <AddTask addTask={addTaskFunction} />
           </Stack>
         </div>
 
         <Stack>
-          <Button onClick={selectRandomTask} size={"60px"} />
+          <Button onClick={selectRandomTask} size={"60px"} text={"Select random task"}/>
+          <Button onClick={() => setDeleteMode((mode) => !mode)} size={"60px"} text={"Delete tasks"}/>
         </Stack>
 
       </Stack>
